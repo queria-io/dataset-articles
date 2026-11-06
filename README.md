@@ -1,14 +1,28 @@
-## 概要
+# Queria ショーケース
 
-Queria ショーケースに掲載されている記事のメタデータを管理するデータセットです。
-Cloudflare D1 から記事情報を取得し、検索用テキストを生成しています。
+[Queria のショーケース](https://queria.io/showcase)に載っているレポートのタイトル・概要・公開日・使っているデータセット・タグを収録したデータセットです。
 
-## テーブル: mart_articles
+## テーブル
 
-- slug: 記事の一意識別子
-- title: 記事タイトル
-- description: 記事の概要
-- date: 公開日
-- datasources: 使用データソース
-- tags: タグ
-- search_text: 検索用テキスト（タイトル + 概要 + タグの結合）
+`main.mart_articles` は 1 行が 1 レポートです。
+
+| 列 | 内容 |
+| --- | --- |
+| `slug` | レポートの一意な識別子 |
+| `title` | タイトル |
+| `description` | 概要 |
+| `date` | 公開日 |
+| `datasources` | 使っているデータセット |
+| `tags` | タグ |
+| `search_text` | タイトル・概要・タグを結合した検索用の文字列 |
+
+## 使い方
+
+「人口」を含むレポートを新しい順に並べる:
+
+```sql
+SELECT slug, title, date
+FROM articles.main.mart_articles
+WHERE search_text LIKE '%人口%'
+ORDER BY date DESC;
+```
